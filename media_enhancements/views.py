@@ -7,51 +7,7 @@ from django.db.models import Q, Count
 from .models import CustomImage, CustomDocument, Category
 
 
-@login_required
-def media_gallery(request):
-    """
-    Display a gallery view of all media (images and documents).
-    """
-    images = CustomImage.objects.all().order_by('-created_at')
-    documents = CustomDocument.objects.all().order_by('-created_at')
-    categories = Category.objects.all()
-    
-    # Filter by category if provided
-    category_slug = request.GET.get('category')
-    if category_slug:
-        images = images.filter(categories__slug=category_slug)
-    
-    # Search functionality
-    search_query = request.GET.get('q')
-    if search_query:
-        images = images.filter(
-            Q(title__icontains=search_query) |
-            Q(tags__name__icontains=search_query)
-        ).distinct()
-        documents = documents.filter(
-            Q(title__icontains=search_query) |
-            Q(tags__name__icontains=search_query)
-        ).distinct()
-    
-    # Pagination
-    image_paginator = Paginator(images, 12)
-    doc_paginator = Paginator(documents, 12)
-    
-    image_page = request.GET.get('image_page', 1)
-    doc_page = request.GET.get('doc_page', 1)
-    
-    images_page_obj = image_paginator.get_page(image_page)
-    docs_page_obj = doc_paginator.get_page(doc_page)
-    
-    context = {
-        'images': images_page_obj,
-        'documents': docs_page_obj,
-        'categories': categories,
-        'search_query': search_query,
-        'selected_category': category_slug,
-    }
-    
-    return render(request, 'media_enhancements/gallery.html', context)
+# Removed media_gallery view - replaced by unified_dashboard
 
 
 @login_required
@@ -117,22 +73,4 @@ def media_stats_api(request):
     return JsonResponse(stats)
 
 
-@login_required
-def category_media(request, category_slug):
-    """
-    Display all media items for a specific category.
-    """
-    category = get_object_or_404(Category, slug=category_slug)
-    images = CustomImage.objects.filter(categories=category).order_by('-created_at')
-    
-    # Pagination
-    paginator = Paginator(images, 12)
-    page = request.GET.get('page', 1)
-    images_page_obj = paginator.get_page(page)
-    
-    context = {
-        'category': category,
-        'images': images_page_obj,
-    }
-    
-    return render(request, 'media_enhancements/category_media.html', context)
+# Removed category_media view - category filtering now in unified_dashboard

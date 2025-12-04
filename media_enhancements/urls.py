@@ -1,4 +1,5 @@
 from django.urls import path
+from django.shortcuts import redirect
 from . import views
 from .unified_dashboard import (
     unified_dashboard, video_detail, audio_detail,
@@ -12,8 +13,8 @@ urlpatterns = [
     # Unified Dashboard
     path('dashboard/', unified_dashboard, name='unified_dashboard'),
     
-    # Original Gallery
-    path('gallery/', views.media_gallery, name='gallery'),
+    # Redirect old gallery to unified dashboard
+    path('gallery/', lambda request: redirect('media_enhancements:unified_dashboard'), name='gallery'),
     
     # Detail Views
     path('image/<int:image_id>/', views.image_detail, name='image_detail'),
@@ -27,8 +28,8 @@ urlpatterns = [
     path('editor/<int:image_id>/preview/', preview_edit, name='preview_edit'),
     path('editor/batch/', batch_process, name='batch_process'),
     
-    # Category View
-    path('category/<slug:category_slug>/', views.category_media, name='category_media'),
+    # Category View - redirect to unified dashboard
+    path('category/<slug:category_slug>/', lambda request, category_slug: redirect('media_enhancements:unified_dashboard'), name='category_media'),
     
     # Folder Management
     path('folder/create/', create_folder, name='create_folder'),
