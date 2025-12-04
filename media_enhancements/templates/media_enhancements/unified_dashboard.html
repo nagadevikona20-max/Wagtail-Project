@@ -122,14 +122,14 @@
     
     .media-card:hover {
         transform: translateY(-5px);
-        background: #667eea;
+        background: #ffffff;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        border-color: #667eea;
+        border-color: #999;
     }
     
     .media-card:hover .media-title,
     .media-card:hover .media-meta {
-        color: #ffffff;
+        color: #000000;
     }
     
     /* Folder cards - white background, gray on hover */
@@ -145,12 +145,6 @@
     .subfolders-section .media-card:hover .media-title,
     .subfolders-section .media-card:hover .media-meta {
         color: #000000;
-    }
-    
-    /* Regular media cards (after folders) - purple hover */
-    .media-grid:not(.subfolders-section .media-grid) .media-card:hover {
-        background: #667eea;
-        border-color: #667eea;
     }
     
     .media-thumbnail {
@@ -541,63 +535,6 @@
 </div>
 {% endif %}
 
-<!-- Folder Actions -->
-<div class="folder-actions mb-3" style="background: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #ddd;">
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createFolderModal">
-        <i class="fas fa-folder-plus"></i> New Folder
-    </button>
-    {% if current_folder %}
-    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#renameFolderModal">
-        <i class="fas fa-edit"></i> Rename Folder
-    </button>
-    {% if current_folder.can_delete %}
-    <button class="btn btn-danger" onclick="if(confirm('Delete this folder?')) window.location.href='{% url 'media_enhancements:delete_folder' current_folder.id %}'">
-        <i class="fas fa-trash"></i> Delete Folder
-    </button>
-    {% endif %}
-    {% endif %}
-</div>
-
-<!-- Subfolders -->
-{% if subfolders %}
-<div class="subfolders-section mb-4">
-    <h5 class="mb-3"><i class="fas fa-folder"></i> Folders</h5>
-    <div class="media-grid">
-        {% for folder in subfolders %}
-        <a href="{% url 'media_enhancements:unified_dashboard' %}?folder={{ folder.id }}&type={{ selected_type }}" 
-           class="media-card" style="text-decoration: none; cursor: pointer;">
-            <div class="media-thumbnail" style="background: linear-gradient(135deg, {{ folder.color }}22 0%, {{ folder.color }}44 100%);">
-                <div class="placeholder-icon" style="color: {{ folder.color }};">
-                    <i class="fas {{ folder.icon }} fa-4x"></i>
-                </div>
-                <span class="media-type-badge" style="background-color: {{ folder.color }};">
-                    <i class="fas fa-folder"></i> Folder
-                </span>
-            </div>
-            <div class="media-card-body">
-                <h5 class="media-title">{{ folder.name }}</h5>
-                <div class="media-meta">
-                    <span class="media-meta-item">
-                        <i class="fas fa-file"></i>
-                        {{ folder.get_media_count }} items
-                    </span>
-                    {% if folder.get_children %}
-                    <span class="media-meta-item">
-                        <i class="fas fa-folder"></i>
-                        {{ folder.get_children.count }} subfolders
-                    </span>
-                    {% endif %}
-                </div>
-                {% if folder.description %}
-                <p class="text-muted small">{{ folder.description|truncatewords:15 }}</p>
-                {% endif %}
-            </div>
-        </a>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
-
 <!-- Media Files Header -->
 {% if media_items or subfolders %}
 <h5 class="mb-3"><i class="fas fa-file"></i> Media Files</h5>
@@ -754,6 +691,63 @@
     <a href="/admin/" class="btn btn-primary btn-lg mt-3">
         <i class="fas fa-upload"></i> Upload Media
     </a>
+</div>
+{% endif %}
+
+<!-- Folder Actions (moved above folders section) -->
+<div class="folder-actions mb-3 mt-5" style="background: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #ddd;">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createFolderModal">
+        <i class="fas fa-folder-plus"></i> New Folder
+    </button>
+    {% if current_folder %}
+    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#renameFolderModal">
+        <i class="fas fa-edit"></i> Rename Folder
+    </button>
+    {% if current_folder.can_delete %}
+    <button class="btn btn-danger" onclick="if(confirm('Delete this folder?')) window.location.href='{% url 'media_enhancements:delete_folder' current_folder.id %}'">
+        <i class="fas fa-trash"></i> Delete Folder
+    </button>
+    {% endif %}
+    {% endif %}
+</div>
+
+<!-- Subfolders (moved below media files) -->
+{% if subfolders %}
+<div class="subfolders-section mb-4">
+    <h5 class="mb-3"><i class="fas fa-folder"></i> Folders</h5>
+    <div class="media-grid">
+        {% for folder in subfolders %}
+        <a href="{% url 'media_enhancements:unified_dashboard' %}?folder={{ folder.id }}&type={{ selected_type }}" 
+           class="media-card" style="text-decoration: none; cursor: pointer;">
+            <div class="media-thumbnail" style="background: linear-gradient(135deg, {{ folder.color }}22 0%, {{ folder.color }}44 100%);">
+                <div class="placeholder-icon" style="color: {{ folder.color }};">
+                    <i class="fas {{ folder.icon }} fa-4x"></i>
+                </div>
+                <span class="media-type-badge" style="background-color: {{ folder.color }};">
+                    <i class="fas fa-folder"></i> Folder
+                </span>
+            </div>
+            <div class="media-card-body">
+                <h5 class="media-title">{{ folder.name }}</h5>
+                <div class="media-meta">
+                    <span class="media-meta-item">
+                        <i class="fas fa-file"></i>
+                        {{ folder.get_media_count }} items
+                    </span>
+                    {% if folder.get_children %}
+                    <span class="media-meta-item">
+                        <i class="fas fa-folder"></i>
+                        {{ folder.get_children.count }} subfolders
+                    </span>
+                    {% endif %}
+                </div>
+                {% if folder.description %}
+                <p class="text-muted small">{{ folder.description|truncatewords:15 }}</p>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
 </div>
 {% endif %}
 
