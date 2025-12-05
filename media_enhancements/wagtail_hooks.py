@@ -28,15 +28,16 @@ def global_admin_css():
     """
     Add custom CSS to the Wagtail admin.
     """
-    return format_html(
+    from django.utils.safestring import mark_safe
+    return mark_safe(
         '<style>'
-        '.media-enhancement-badge {{ '
+        '.media-enhancement-badge { '
         '    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); '
         '    color: white; '
         '    padding: 2px 8px; '
         '    border-radius: 3px; '
         '    font-size: 11px; '
-        '}} '
+        '} '
         '</style>'
     )
 
@@ -46,20 +47,21 @@ def global_admin_js():
     """
     Add custom JavaScript to enhance the admin experience.
     """
-    return format_html(
+    from django.utils.safestring import mark_safe
+    return mark_safe(
         '''
         <script>
-        document.addEventListener('DOMContentLoaded', function() {{
+        document.addEventListener('DOMContentLoaded', function() {
             console.log('Rich Media Library Enhancements Loaded');
             
             // Add visual indicators for custom fields
             const copyrightFields = document.querySelectorAll('[name*="copyright"]');
-            copyrightFields.forEach(field => {{
-                if (field.value) {{
+            copyrightFields.forEach(field => {
+                if (field.value) {
                     field.style.borderLeft = '3px solid #28a745';
-                }}
-            }});
-        }});
+                }
+            });
+        });
         </script>
         '''
     )

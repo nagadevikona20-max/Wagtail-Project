@@ -5,6 +5,17 @@
 
 {% block extra_css %}
 <style>
+    /* Base font size matching home page */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
     @keyframes gradient-shift {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
@@ -35,6 +46,15 @@
         border-radius: 15px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         border: 1px solid #ddd;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+    
+    .dashboard-header .lead {
+        font-size: 1.1rem;
     }
     
     .stats-grid {
@@ -73,23 +93,23 @@
     }
     
     .stat-number {
-        font-size: 3rem;
-        font-weight: 900;
+        font-size: 2.5rem;
+        font-weight: 700;
         margin-bottom: 8px;
         color: inherit;
-        letter-spacing: -2px;
+        letter-spacing: -1px;
     }
     
     .stat-label {
         font-size: 0.95rem;
         font-weight: 500;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
         text-transform: uppercase;
         color: inherit;
     }
     
     .stat-icon {
-        font-size: 2.5rem;
+        font-size: 2rem;
         margin-bottom: 15px;
         color: inherit;
     }
@@ -193,7 +213,7 @@
     }
     
     .media-title {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 600;
         margin-bottom: 10px;
         color: #000000;
@@ -208,7 +228,7 @@
         flex-wrap: wrap;
         gap: 10px;
         margin-bottom: 15px;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         color: #000000;
     }
     
@@ -430,7 +450,8 @@
     /* Headings */
     h5 {
         color: #000000;
-        font-weight: bold;
+        font-weight: 600;
+        font-size: 1.3rem;
     }
     
     /* Body background */
@@ -462,6 +483,7 @@
         color: #000000;
         font-weight: 500;
         margin-bottom: 8px;
+        font-size: 0.95rem;
     }
 </style>
 {% endblock %}
@@ -478,31 +500,31 @@
 
 <!-- Statistics Cards -->
 <div class="stats-grid">
-    <a href="?type=all" class="stat-card {% if selected_type == 'all' %}active{% endif %}" style="text-decoration: none;">
+    <a href="?type=all" id="section-all" class="stat-card {% if selected_type == 'all' %}active{% endif %}" style="text-decoration: none;">
         <div class="stat-icon"><i class="fas fa-th"></i></div>
         <div class="stat-number">{{ stats.total }}</div>
         <div class="stat-label">Total Media</div>
     </a>
     
-    <a href="?type=image" class="stat-card {% if selected_type == 'image' %}active{% endif %}" style="text-decoration: none;">
+    <a href="?type=image" id="section-image" class="stat-card {% if selected_type == 'image' %}active{% endif %}" style="text-decoration: none;">
         <div class="stat-icon"><i class="fas fa-image"></i></div>
         <div class="stat-number">{{ stats.images }}</div>
         <div class="stat-label">Images</div>
     </a>
     
-    <a href="?type=video" class="stat-card {% if selected_type == 'video' %}active{% endif %}" style="text-decoration: none;">
+    <a href="?type=video" id="section-video" class="stat-card {% if selected_type == 'video' %}active{% endif %}" style="text-decoration: none;">
         <div class="stat-icon"><i class="fas fa-video"></i></div>
         <div class="stat-number">{{ stats.videos }}</div>
         <div class="stat-label">Videos</div>
     </a>
     
-    <a href="?type=audio" class="stat-card {% if selected_type == 'audio' %}active{% endif %}" style="text-decoration: none;">
+    <a href="?type=audio" id="section-audio" class="stat-card {% if selected_type == 'audio' %}active{% endif %}" style="text-decoration: none;">
         <div class="stat-icon"><i class="fas fa-music"></i></div>
         <div class="stat-number">{{ stats.audio }}</div>
         <div class="stat-label">Audio</div>
     </a>
     
-    <a href="?type=document" class="stat-card {% if selected_type == 'document' %}active{% endif %}" style="text-decoration: none;">
+    <a href="?type=document" id="section-document" class="stat-card {% if selected_type == 'document' %}active{% endif %}" style="text-decoration: none;">
         <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
         <div class="stat-number">{{ stats.documents }}</div>
         <div class="stat-label">Documents</div>
@@ -541,7 +563,7 @@
 {% endif %}
 
 <!-- Filters Section -->
-<div class="filters-section">
+<div class="filters-section" id="filters-section">
     <form method="get" action="{% url 'media_enhancements:unified_dashboard' %}">
         <div class="row">
             <div class="col-md-6 mb-3">
@@ -853,8 +875,59 @@
 
 {% block extra_js %}
 <script>
-// Add move button to each media card
+// Auto-scroll to content section based on URL parameter
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Auto-scroll script loaded');
+    
+    // Get the type parameter from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get('type');
+    
+    console.log('Type parameter:', type);
+    
+    // If type parameter exists and is not 'all', scroll to the content section
+    if (type && type !== 'all') {
+        console.log('Attempting to scroll for type:', type);
+        
+        // Try to find the media content section or filters section
+        let targetSection = document.getElementById('media-content-section');
+        if (!targetSection) {
+            targetSection = document.getElementById('filters-section');
+        }
+        
+        console.log('Target section found:', targetSection);
+        
+        if (targetSection) {
+            // Wait for page to fully render
+            setTimeout(function() {
+                console.log('Scrolling to section...');
+                
+                // Scroll to the section
+                targetSection.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start',
+                    inline: 'nearest'
+                });
+                
+                // Highlight the active stat card
+                const statCard = document.getElementById('section-' + type);
+                if (statCard) {
+                    console.log('Highlighting stat card:', statCard);
+                    statCard.style.transition = 'all 0.5s ease';
+                    statCard.style.transform = 'scale(1.08)';
+                    statCard.style.boxShadow = '0 8px 20px rgba(102, 126, 234, 0.4)';
+                    
+                    setTimeout(function() {
+                        statCard.style.transform = 'scale(1.05)';
+                    }, 600);
+                }
+            }, 500);
+        } else {
+            console.log('No target section found');
+        }
+    }
+    
+    // Add move button to each media card
     const mediaCards = document.querySelectorAll('.media-card');
     mediaCards.forEach(card => {
         const actionsDiv = card.querySelector('.media-actions');
