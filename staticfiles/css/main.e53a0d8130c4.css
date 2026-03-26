@@ -1,0 +1,44 @@
+/* This is the main stylesheet for the frontend.
+    It primarily imports Tailwind CSS and a global font.
+
+    Note: In a true production environment, you would use a build step (like webpack or postcss)
+    to compile Tailwind CSS. For this simple setup, we are relying on pre-built
+    Tailwind classes applied directly in the HTML.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+/* Apply Inter font globally and ensure box-sizing is correct */
+body {
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+/* Base style for rich text content */
+.prose {
+    color: #374151; /* Gray-700 */
+    line-height: 1.75;
+}
+
+.prose h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+    border-bottom: 2px solid #EFF6FF; /* Blue-50 */
+    padding-bottom: 0.25em;
+}
+
+.prose p {
+    margin-bottom: 1em;
+}
+
+.prose ul, .prose ol {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-left: 1.5em;
+}
+
+.prose li {
+    margin-bottom: 0.5em;
+}

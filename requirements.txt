@@ -1,37 +1,31 @@
-# Django>=5.2,<5.3
-# wagtail>=7.2,<7.3
-
 wagtail
-Django>=4.2  # Match your Wagtail version requirements
-psycopg2-binary  # For PostgreSQL deployment (recommended)
+Django>=4.2
+psycopg2-binary
 pillow
-django-taggit  # Tagging support
+django-taggit
 django-modelcluster
 dj-database-url
 django-storages[boto3]
 boto3
 whitenoise
-django-model-utils # Useful for model inheritance
-djangorestframework  # REST API support
-django-filter  # Filtering support for API
-pillow-heif  # HEIF/HEIC support
-pillow-avif-plugin  # AVIF support
-moviepy  # Video processing and trimming
-ffmpeg-python  # FFmpeg wrapper for video operations
-python-magic  # File type detection
-requests  # For remote video embedding
-pydub  # Audio processing and manipulation
-librosa  # Audio analysis and waveform generation
-soundfile  # Audio file I/O
-numpy  # Numerical operations for audio
-matplotlib  # Waveform visualization
-mutagen  # Audio metadata extraction
-openai  # AI auto-tagging (optional)
-transformers  # Hugging Face models for AI tagging (optional)
-torch  # PyTorch for AI models (optional)
-PyPDF2  # PDF manipulation and reading
-pdf2image  # Convert PDF to images
-pytesseract  # OCR for scanned documents
-pypdfium2  # Fast PDF rendering
-pdfplumber  # PDF text extraction
-
+django-model-utils
+djangorestframework
+django-filter
+pillow-heif
+pillow-avif-plugin
+moviepy
+ffmpeg-python
+python-magic
+requests
+pydub
+librosa
+soundfile
+numpy
+matplotlib
+mutagen
+PyPDF2
+pdf2image
+pytesseract
+pypdfium2
+pdfplumber
+# torch, transformers, openai are optional AI features — install separately if needed

@@ -16,7 +16,7 @@ env/
 db.sqlite3
 db.sqlite3-journal
 /media
-/staticfiles
+# staticfiles committed for Vercel deployment (served by Whitenoise)
 *.pot
 
 # IDE
@@ -45,3 +45,4 @@ htmlcov/
 
 # mypy
 .mypy_cache/
+.vercel
