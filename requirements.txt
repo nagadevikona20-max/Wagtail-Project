@@ -13,19 +13,12 @@ djangorestframework
 django-filter
 pillow-heif
 pillow-avif-plugin
-moviepy
-ffmpeg-python
 python-magic
 requests
-pydub
-librosa
-soundfile
 numpy
-matplotlib
 mutagen
 PyPDF2
-pdf2image
-pytesseract
 pypdfium2
 pdfplumber
-# torch, transformers, openai are optional AI features — install separately if needed
+# Heavy media packages below require Docker/Render — not included for Vercel
+# librosa, soundfile, pydub, matplotlib, moviepy, ffmpeg-python, pdf2image, pytesseract
