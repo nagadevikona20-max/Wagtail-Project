@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: wagtail-cms
+    env: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: my_cms_project.settings.production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PORT
+        value: 8000
